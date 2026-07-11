@@ -3,7 +3,7 @@ import os
 from datetime import datetime,timedelta
 
 
-start_date = datetime(2025,2,18)
+start_date = datetime(2025,2,17)
 end_date = datetime(2025,12,31)
 
 baseUrl = r"https://midcdmz.nlr.gov/tsi/SRRLASI"

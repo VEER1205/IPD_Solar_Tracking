@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from Routers.tracker_routes import router
 
 app = FastAPI()
 
@@ -8,3 +9,5 @@ def Hello():
         "Status":"200",
         "Message":"API Is Running "
             }
+
+app.include_router(router)

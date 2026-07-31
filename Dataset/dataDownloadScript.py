@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 from tqdm import tqdm
 
 def download_solar_data():
-    start_date = datetime(2024, 12, 26)
-    end_date = datetime(2024, 12, 26)
+    start_date = datetime(2024, 11, 16)
+    end_date = datetime(2024, 11, 16)
     base_url = r"https://midcdmz.nlr.gov/tsi/SRRLASI"
     
     save_folder = r"D:\code1\IPD_Solar_Tracking\Dataset\Download Images"

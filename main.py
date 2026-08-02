@@ -1,7 +1,24 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Depends
 from Routers.tracker_routes import router
+from functools import lru_cache
+from .Config import Settings
 
 app = FastAPI()
+
+@lru_cache()
+def getSettings():
+    return Settings()
+
+@app.get("/Info")
+def getInfo(setting : Settings = Depends(getSettings)):
+    return {
+        "PANEL AREA":setting.PANEL_AREA,
+        "PANEL AZIMUTH":setting.PANEL_AZIMUTH,
+        "PANEL ELEVATION":setting.PANEL_ELEVATION,
+        "PANEL EFFICIENCY":setting.PANEL_EFFICIENCY,
+        "SERVO Current":setting.SERVO_I_M,
+        "SERVO Votage":setting.SERVO_V_M
+    }
 
 @app.get("/")
 def Hello():

@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import numpy as np
 import re
 import shutil
 from pathlib import Path
@@ -78,32 +79,13 @@ def clean_images():
 def execute_merge():
     print("📊 Loading CSV dataset...")
     df = pd.read_csv(CSV_FILE)
-    
-    # 1. Reconstruct the NREL filename from your dateTime column
-    # Example: 202401010000 -> 20240101000000_11.jpg
-    df['filename'] = df['dateTime'].astype(str)
-    
-    # 2. Rename the massive sensor column to something easy for TensorFlow
-    df.rename(columns={'Global CMP22 (vent/cor) [W/m^2]': 'irradiance'}, inplace=True)
-    
-    # 3. Create a fast-lookup list of the clean images actually on your drive
-    print("🔍 Scanning the cleaned image directory...")
-    existing_images = set(os.listdir(OUTPUT_PATH))
-    
-    # 4. THE MERGE: Keep ONLY the rows where the image file actually exists
-    final_df = df[df['filename'].isin(existing_images)]
-    
-    # 5. Isolate just the two columns MobileNetV2 cares about
-    # final_df = final_df[['filename', 'irradiance']]
-    
-    # Safety check: drop any rows that have blank irradiance numbers
-    final_df = final_df.dropna()
-    
-    # Export the final dataset
-    final_df.to_csv(f"D:\code1\IPD_Solar_Tracking\Dataset\Cleaned_DataSet.csv", index=False)
-    
-    print(f"🚀 Merge Complete! Final mapping saved to: D:\code1\IPD_Solar_Tracking\Dataset\Cleaned_DataSet.csv")
-    print(f"🎯 Total valid training pairs ready for the CNN: {len(final_df)}")
+
+    imageList = np.array(os.listdir(OUTPUT_PATH))
+    for i in range(len(imageList)):
+        imageList[i] = imageList[i][:12]
+    df["ImageBool"] = df["dateTime"].isin(imageList)
+    df = df[df["ImageBool"]] 
+    print(df.head(10))
 
 if __name__ == "__main__":
     # Ensure the output directory actually exists before running operations

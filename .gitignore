@@ -7,6 +7,8 @@ __pycache__/
 Download Images
 Images
 Dataset\Images
+CleanedDataSet.csv
+
 # C extensions
 *.so
 

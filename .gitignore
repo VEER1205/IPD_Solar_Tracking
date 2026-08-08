@@ -2,12 +2,21 @@
 __pycache__/
 *.py[codz]
 *$py.class
+# Ignore dataset and model files
+dataset_images/
+*.keras
+*.h5
+*.zip
+*.csv
+.venv/
 
 
 Download Images
 Images
+*.zip
+Dataset\CleanedDataSet.csv
 Dataset\Images
-CleanedDataSet.csv
+*.csv
 
 # C extensions
 *.so

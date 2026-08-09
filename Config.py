@@ -4,6 +4,7 @@ class Settings(BaseSettings):
     PANEL_AREA: float    
     PANEL_EFFICIENCY: float  
     PERFORMANCE_RATIO: float
+    THRESHOLD_ANGLE: float
     SERVO_V_M: float 
     SERVO_I_M: float  
     SAFETY_MARGIN: float 

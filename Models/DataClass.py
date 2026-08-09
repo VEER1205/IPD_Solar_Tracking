@@ -5,4 +5,7 @@ class predictParams(BaseModel):
     azimuth:int = Query(...)
     elevation : int  = Query(...)
     panelCurrentEnergyGenaration: int = Query()
-    
+
+
+class chekcAngleClass(BaseModel):
+    pass

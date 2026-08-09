@@ -1,6 +1,6 @@
-from pydantic_settings import BaseSettings,SettingsConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-class Settings(BaseSettings):
+class AppSettings(BaseSettings):
     PANEL_AREA: float    
     PANEL_EFFICIENCY: float  
     PERFORMANCE_RATIO: float
@@ -10,9 +10,11 @@ class Settings(BaseSettings):
     SAFETY_MARGIN: float 
     PANEL_AZIMUTH: float 
     PANEL_ELEVATION: float 
-    LATITUDE:float
-    LONGITUDE:float
-    TIME_ZONE:str
-    SERVO_DELTA_TIME:float
+    LATITUDE: float
+    LONGITUDE: float
+    TIME_ZONE: str = "Asia/Kolkata"
+    SERVO_DELTA_TIME: float
 
     model_config = SettingsConfigDict(env_file=".env")
+
+Settings = AppSettings()

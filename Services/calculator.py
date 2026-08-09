@@ -24,10 +24,14 @@ def checkAngles():
 
     if deltaAzimuth < Settings.THRESHOLD_ANGLE and deltaElevation < Settings.THRESHOLD_ANGLE:
         print("No Need Of Moving:-")
+        print(f"Current Sun Angles:- ({sunAzimuth,sunElevation})")
+        print(f"Current Panel Angles:- ({Settings.PANEL_AZIMUTH,Settings.PANEL_ELEVATION})")
+        
     else:
         print("Calling Predict Function:- ")
         Settings.PANEL_ELEVATION = sunElevation
         Settings.PANEL_AZIMUTH = sunAzimuth    
+        print(f"Updated {Settings.PANEL_ELEVATION = } AND { Settings.PANEL_AZIMUTH =}")
 
 def evaluateNetEnergy(predictedIrradiance: float) -> bool:
     motorEnergyCost = Settings.SERVO_V_M * Settings.SERVO_I_M * Settings.SERVO_DELTA_TIME

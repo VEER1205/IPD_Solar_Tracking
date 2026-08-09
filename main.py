@@ -1,7 +1,7 @@
 from fastapi import FastAPI,Depends
 from Routers.tracker_routes import router
 from functools import lru_cache
-from Config import Settings
+from Config import Settings,AppSettings
 from Services.calculator import checkAngles
 from apscheduler.schedulers.background import BackgroundScheduler
 from contextlib import asynccontextmanager
@@ -9,7 +9,7 @@ from contextlib import asynccontextmanager
 @asynccontextmanager
 async def lifespan(app:FastAPI):
     schedular = BackgroundScheduler()
-    schedular.add_job(checkAngles,'interval',minutes=15)
+    schedular.add_job(checkAngles,'interval',minutes=1)
     schedular.start()
 
     yield
@@ -20,10 +20,10 @@ app = FastAPI(lifespan=lifespan)
 
 @lru_cache()
 def getSettings():
-    return Settings()
+    return Settings
 
-@app.get("/Info")
-def getInfo(setting : Settings = Depends(getSettings)):
+@app.get("/info")
+def getInfo(setting : AppSettings = Depends(getSettings)):
     return {
         "PANEL AREA":setting.PANEL_AREA,
         "PANEL AZIMUTH":setting.PANEL_AZIMUTH,

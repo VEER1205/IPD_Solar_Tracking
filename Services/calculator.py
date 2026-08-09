@@ -1,5 +1,4 @@
 import pvlib
-import math
 import pandas as pd
 from Config import Settings
 
@@ -10,6 +9,8 @@ def getSunAngles():
 
     sunAzimuth = float(solarPosition['azimuth'].iloc[0])
     sunElevation = float(solarPosition['elevation'].iloc[0])
+
+    print(f"Time:- {time}")
 
     return sunAzimuth,sunElevation 
 
@@ -26,7 +27,7 @@ def checkAngles():
         print("No Need Of Moving:-")
         print(f"Current Sun Angles:- ({sunAzimuth,sunElevation})")
         print(f"Current Panel Angles:- ({Settings.PANEL_AZIMUTH,Settings.PANEL_ELEVATION})")
-        
+
     else:
         print("Calling Predict Function:- ")
         Settings.PANEL_ELEVATION = sunElevation

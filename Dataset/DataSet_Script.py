@@ -9,7 +9,7 @@ from tqdm import tqdm
 # --- CONFIGURATION & PATHS ---
 BASE_DIR = Path(r"D:\code1\IPD_Solar_Tracking\Dataset")
 INPUT_PATH = BASE_DIR / "Download Images"
-OUTPUT_PATH = BASE_DIR / "Images"
+OUTPUT_PATH = BASE_DIR / "AllImages"
 CSV_FILE = BASE_DIR / "DataSet.csv"
 
 def extract_images():
@@ -87,10 +87,15 @@ def execute_merge():
     df = df[df["ImageBool"]] 
     print(df.head(10))
 
+def check():
+    files = os.llistdir(OUTPUT_PATH)
+    print(files)
+
 if __name__ == "__main__":
     # Ensure the output directory actually exists before running operations
     OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
     
     # extract_images()
     # clean_images()
-    execute_merge()
+    # execute_merge()
+    check()

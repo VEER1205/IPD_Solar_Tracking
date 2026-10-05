@@ -1,7 +1,11 @@
+import os
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 import cv2
 import numpy as np
 import tensorflow as tf
-from hardware_serial import takeImage 
+from Services.hardware_serial import takeImage 
 
 try:
     model = tf.keras.models.load_model("Models/efficientnet_b4_solar.keras")

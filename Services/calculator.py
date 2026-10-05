@@ -1,8 +1,8 @@
 import math
 import pvlib
 import pandas as pd
-from hardware_serial import moveServo
-from prediction import predict
+from Services.hardware_serial import moveServo
+from Services.prediction import predict
 from Config import Settings
 
 def getSunAngles() -> tuple[float, float]:

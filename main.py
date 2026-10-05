@@ -5,11 +5,12 @@ from Config import Settings,AppSettings
 from Services.calculator import checkAngles
 from apscheduler.schedulers.background import BackgroundScheduler
 from contextlib import asynccontextmanager
+from datetime import datetime
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
     schedular = BackgroundScheduler()
-    schedular.add_job(checkAngles,'interval',minutes=Settings.POLLING_INTERVAL_SECONDS)
+    schedular.add_job(checkAngles,'interval',seconds=Settings.POLLING_INTERVAL_SECONDS,next_run_time=datetime.now())
     schedular.start()
 
     yield

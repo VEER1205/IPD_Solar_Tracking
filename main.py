@@ -9,7 +9,7 @@ from contextlib import asynccontextmanager
 @asynccontextmanager
 async def lifespan(app:FastAPI):
     schedular = BackgroundScheduler()
-    schedular.add_job(checkAngles,'interval',minutes=1)
+    schedular.add_job(checkAngles,'interval',minutes=Settings.POLLING_INTERVAL_SECONDS)
     schedular.start()
 
     yield
@@ -39,5 +39,6 @@ def Hello():
         "Status":"200",
         "Message":"API Is Running "
             }
+
 
 app.include_router(router)

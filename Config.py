@@ -14,6 +14,9 @@ class AppSettings(BaseSettings):
     LONGITUDE: float
     TIME_ZONE: str = "Asia/Kolkata"
     SERVO_DELTA_TIME: float
+    ESP32_CAM_URL : str
+    ESP32_MAIN_URL: str
+    POLLING_INTERVAL_SECONDS: int
 
     model_config = SettingsConfigDict(env_file=".env")
 

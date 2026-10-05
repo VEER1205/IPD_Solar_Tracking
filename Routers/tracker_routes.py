@@ -5,7 +5,7 @@ from Models.DataClass import predictParams
 router = APIRouter()
 
 @router.get("/move")
-def predict(panelAngles:predictParams = Depends()):
+async def predict(panelAngles:predictParams = Depends()):
     pass
 
     

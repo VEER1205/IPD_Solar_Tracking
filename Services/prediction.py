@@ -4,7 +4,7 @@ import tensorflow as tf
 from hardware_serial import takeImage 
 
 try:
-    model = tf.keras.models.load_model("efficientnetb4_irradiance.h5")
+    model = tf.keras.models.load_model("Models/efficientnet_b4_solar.keras")
     print("TensorFlow EfficientNetB4 loaded successfully.")
 except Exception as e:
     print(f"Warning: Model not found or failed to load. {e}")

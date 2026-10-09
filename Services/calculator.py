@@ -18,8 +18,7 @@ def getSunAngles() -> tuple[float, float]:
     print(f"Time: {time}")
     return sun_azimuth, sun_elevation 
 
-def evaluateNetEnergy(predicted_irradiance: float, delta_azimuth: float, delta_elevation: float) -> bool:
-
+def evaluateNetEnergy(predicted_irradiance: float, delta_azimuth: float, delta_elevation: float) -> tuple[float, float, bool]:
     total_error_deg = math.sqrt(delta_azimuth**2 + delta_elevation**2)
     total_error_rad = math.radians(total_error_deg)
 
@@ -35,9 +34,7 @@ def evaluateNetEnergy(predicted_irradiance: float, delta_azimuth: float, delta_e
     servo_cost_joules = Settings.SERVO_V_M * Settings.SERVO_I_M * Settings.SERVO_DELTA_TIME
     safety_margin_joules = 2.0
     
-    print(f"[ENERGY] Marginal Gain: {marginal_gain_joules:.2f} J | Motor Cost: {servo_cost_joules:.2f} J")
-    
-    return marginal_gain_joules > (servo_cost_joules + safety_margin_joules)
+    return marginal_gain_joules, servo_cost_joules, (marginal_gain_joules > (servo_cost_joules + safety_margin_joules))
 
 def checkAngles():
     sun_azimuth, sun_elevation = getSunAngles()
@@ -57,15 +54,30 @@ def checkAngles():
         return
 
     print("Threshold exceeded. Calling Predict Function...")
-    irradiance = predict()
-    if irradiance > 0 and evaluateNetEnergy(irradiance, delta_azimuth, delta_elevation):
-        servo_azimuth = sun_azimuth - 45.0 
-        servo_azimuth = max(0.0, min(270.0, servo_azimuth))
+    
+    try:
+        irradiance = predict()
+
+    except Exception as e:
+        print(f"Movement aborted due to sensor error: {e}")
+        return 
         
-        # Clamp elevation to standard 0-90 degree limits
+    marginal_gain_joules, servo_cost_joules, checkFlage = evaluateNetEnergy(irradiance, delta_azimuth, delta_elevation)
+
+    print(f"[ENERGY] Marginal Gain: {marginal_gain_joules:.2f} J | Motor Cost: {servo_cost_joules:.2f} J")
+
+    if irradiance > 0 and checkFlage:
+        # 1. Geographic Offset
+        physical_azimuth = sun_azimuth - 45.0
+        physical_azimuth = max(0.0, min(270.0, physical_azimuth))
+        
+        # 2. Software Scaling for ESP32 limits
+        esp32_azimuth = (physical_azimuth / 270.0) * 180.0
+        
+        # 3. Clamp elevation to standard 0-90 degree limits
         servo_elevation = max(0.0, min(90.0, sun_elevation))
 
-        if moveServo(panelElevation=servo_elevation, panelAzimuth=servo_azimuth):
+        if moveServo(panelElevation=servo_elevation, panelAzimuth=esp32_azimuth):
             Settings.PANEL_ELEVATION = sun_elevation
             Settings.PANEL_AZIMUTH = sun_azimuth
             print(f"Updated Settings.PANEL_ELEVATION = {Settings.PANEL_ELEVATION:.1f} AND Settings.PANEL_AZIMUTH = {Settings.PANEL_AZIMUTH:.1f}")
